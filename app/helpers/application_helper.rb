@@ -13,7 +13,7 @@ module ApplicationHelper
   	end
 
 	def generate_admin_link(options)
-	 	link_to(options[:title_text], options[:path]) if current_user.role == 'admin'
+	 	button_to(options[:title_text], options[:path], class: options[:css], method: 'get') if current_user.role == 'admin'
 	end
 
 	def get_volunteer_counts(role, event)

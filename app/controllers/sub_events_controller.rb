@@ -30,12 +30,16 @@ class SubEventsController < ApplicationController
 
   def complete_task
     if @sub_event.update(:completed_at => Time.now)
-      @sub_event.event.complete if !@sub_event.event.incomplete_tasks?
+      @sub_event.event.completes unless @sub_event.event.incomplete_tasks?
       response = {notice: "Task has been completed."}
     else
       response = {alert: "Task could not be completed"}
     end
-    redirect_to event_path(@sub_event.event), response
+    if @sub_event.event.completed_at.nil?
+      redirect_to event_path(@sub_event.event), response
+    else
+      redirect_to events_path, response
+    end
   end
 
   def task_remove

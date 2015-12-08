@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   resources :event_types
 
   authenticated do
-    root :to => 'users#dashboard', as: :authenticated
+    root :to => 'events#index', as: :authenticated
   end
 
   root :to => 'home#index'

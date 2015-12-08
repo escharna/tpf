@@ -3,32 +3,21 @@
 <table class="table table-striped table-bordered">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Type</th>
+      <th class="col col-sm-3">Type</th>
       <th>Body</th>
-      <th>Read</th>
-      <th>Actions</th>
+      <th class="col col-sm-2">Actions</th>
     </tr>
   </thead>
 
   <tbody>
     <% @notifications.each do |n| %>
       <tr>
-        <td><%= n.id %>
         <td><%= n.notification.notification_type %></td>
         <td><%= n.notification.body %></td>
-        <td><%= n.read %></td>
         <td><%= link_to 'Delete', delete_user_notification_path(n), data: { confirm: 'Are you sure?' } %></td>
-
-        <!-- 
-        <td><%#= link_to 'Show', notification %></td>
-        <td><%#= link_to 'Edit', edit_notification_path(notification) %></td>
-        <td><%#=  %></td> -->
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%#= link_to 'New Notification', new_notification_path %>

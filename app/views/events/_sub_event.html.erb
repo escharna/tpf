@@ -12,7 +12,13 @@
           <div class="panel-heading">
             <i class="glyphicon glyphicon-exclamation-sign
 "></i> Volunteer Information
-<% if can? :roster, task %>| <%= link_to "Roster", roster_path(task) %> <% end %>
+          <% if can? :roster, task %>
+            <% if current_user.role == 'staff' && task.users.include?(current_user) || current_user.role == 'admin' %>
+            <% if task.start_time.to_date == Time.zone.now.to_date || current_user.role == 'admin'%>
+            | <span style="font-weight: bold"><%= link_to "Tracking", roster_path(task) %></span>
+            <% end %>
+            <% end %>
+          <% end %>
           </div>
            <table class="table table-bordered table-event-tasks">
             <tr>

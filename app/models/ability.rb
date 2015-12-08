@@ -12,7 +12,25 @@ class Ability
         can :manage, :all
     end
 
-    if user.role == 'staff' || user.role == 'community' || user.role == 'intern'
+    if user.role == 'staff'
+        can [:read, :manage, :destroy, :update], User, :id => user.id
+        can [:show], User
+        cannot [:index, :create, :approve_users, :approve], User
+        cannot [:read,:create,:update,:destroy,:manage], EventType
+        cannot [:read,:create,:update,:destroy,:manage], VolunteerNote
+        cannot [:create,:update,:destroy,:manage], Event
+        can [:read], Event
+        cannot [:create,:update,:destroy,:manage], SubEvent
+        can [:roster, :add_user_to_task, :remove_user_from_task], SubEvent
+        can [:read, :sign_up, :task_remove], SubEvent
+        cannot [:create,:update,:destroy,:manage], Preference
+        cannot [:create,:update,:destroy,:manage], PreferenceType
+        cannot [:create, :update, :destroy, :manage], SubEventType
+        can [:index], Notification
+        cannot [:create,:update,:destroy], Notification
+    end
+
+    if user.role == 'community' || user.role == 'intern'
         can [:read, :manage, :destroy, :update], User, :id => user.id
         can [:show], User
         cannot [:index, :create, :approve_users, :approve], User

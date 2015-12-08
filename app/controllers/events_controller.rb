@@ -7,7 +7,7 @@ class EventsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    return @events = Event.all if current_user.role.to_s  == "admin"
+    return @events = Event.where(completed_at: nil) if current_user.role.to_s  == "admin"
     @events = Event.openings_with_role(current_user.role.to_sym)
   end
 

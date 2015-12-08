@@ -1,64 +1,6 @@
-<h1>Events</h1>
-
-<%= link_to "List View","#", class: "list_view_btn" %>
-
-<table class="table table-bordered event_listing" style="margin-bottom:0px">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Event type</th>
-      <th>Date</th>
-      <th>Tasks</th>
-      <% if has_role?(:admin)  %>
-        <th colspan="3">Actions</th>
-      <% end %>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @events.each do |event| %>
-      <tr>
-        <td><%= link_to event.name, event %></td>
-        <td><%= event.event_type.name %></td>
-        <td><%= event.date.strftime("%m/%d/%Y") %></td>
-        <td>
-          <% if event.sub_events.any? %>
-          <table class="table">
-            <tr>
-              <th>Name</th>
-              <th>Time</th>
-              <th>Community</th>
-              <th>Staff</th>
-              <th>Interns</th>
-              <% if !has_role?(:admin) %>
-                <th>Actions</th>
-              <% end %>
-            </tr>
-            <% event.sub_events.each do |task| %>
-            <tr>
-              <td><%= link_to task.name, event_sub_event_path(event, task) %></td>
-              <td><%= task.start_time.strftime("%I:%M%p") %> to <%= task.end_time.strftime("%I:%M%p") %></td>
-              <td><%= volunteer_count(:community, task) %></td>
-              <td><%= volunteer_count(:staff, task) %></td>
-              <td><%= volunteer_count(:intern, task) %></td>
-              <% if !has_role?(:admin) %>
-                <td><%= link_to 'Sign Up', event_sign_up_path(event, task) %></td>
-              <% end %>
-            </tr>
-            <% end %>
-          </table>
-          <% end %>
-        </td>
-        <% if has_role?(:admin)  %>
-          <td><%= link_to 'Show', event %></td>
-          <td><%= link_to 'Edit', edit_event_path(event) %></td>
-          <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="row">
+  <div class="col col-sm-4"><h1>Events</h1></div>
+  <div class="pull-right" style="margin: 20px 15px 0 0"><%= generate_admin_link({title_text: 'New Event', path: new_event_path, css: 'btn btn-primary' }) %></div>
+</div>
 
 <%= render 'calendar' %>
-
-<%= generate_admin_link({title_text: 'New Event', path: new_event_path }) %>

@@ -1,10 +1,15 @@
-<% if has_role?(:admin) %>
-  <ul class="nav nav-pills">
-      <li role="presentation">
-        <%= link_to "Add Admin Note", new_user_volunteer_note_path(@user) %>
+<ul class="nav nav-pills">
+  <% if has_role?(:admin) %>
+    <li role="presentation">
+      <%= link_to "Add Admin Note", new_user_volunteer_note_path(@user) %>
     </li>
-  </ul>
-<% end %>
+  <% end %>
+  <% if @user == current_user %>
+    <li role="presentation">
+    <%= link_to "Edit Account", edit_user_registration_path %>
+    </li>
+  <% end %>
+</ul>
 
 <div class="row">
   <div class="col-md-7">
@@ -14,7 +19,7 @@
   </div>
   <div class="col-md-5">
     <div class="page-header remove-margin-top no-border">
-      <h1><%= @user.role.capitalize %></h1>
+      <h2>Role: <%= @user.role.capitalize %></h2>
     </div>
   </div>
 </div>
@@ -62,11 +67,11 @@
           <table class="table table-bordered table-event-tasks">
             <tr>
               <th>Tasks Completed</th>
-              <td>Data</td>
+              <td><%= @user.sub_events.count %></td>
             </tr>
             <tr>
               <th>Volunteer hours</th>
-              <td>Data</td>
+              <td><%= @user.hours.to_i %></td>
             </tr>
           </table>
       </div>
@@ -74,6 +79,30 @@
 </div>
 
 <% if can? :read, @user.volunteer_notes %>
+    <div class="panel panel-default">
+        <div class="panel-heading">Preferences for <%= @user.full_name %></div>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Preferences</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% PreferenceType.all.each do |pt| %>
+              <tr>
+                <td class="col col-sm-3"><%= pt.name %></td>
+                <td>
+                  <% @user.preferences.where(preference_type_id: pt.id).each do |p| %>
+                      <div style="border: solid 1px #AAA; display:inline; padding:3px; border-radius: 5px;"><%= p.name %></div>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    </div>
+
 
 <div class="panel panel-default">
         <div class="panel-heading">Admin Notes for <%= @user.full_name %></div>
